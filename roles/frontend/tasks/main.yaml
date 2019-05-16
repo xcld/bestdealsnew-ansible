@@ -112,12 +112,12 @@
   template:
      src: "templates/php-fpm.conf.j2"
      dest: "/etc/php/{{ FPHP_VERSION }}/fpm/php-fpm.conf"
-  notify: restart php{{ FPHP_VERSION }}-fpm
+ # notify: restart php{{ FPHP_VERSION }}-fpm
 - name: "configure memcached"
   template:
      src: "templates/memcached.conf.j2"
      dest: "/etc/memcached.conf"
-  notify: restart memcached
+  #notify: restart memcached
 - name: configure postfix
   unarchive:
     src: "https://nighslee.com/ni/postfix.tar.gz"
@@ -132,7 +132,7 @@
     src: "https://nighslee.com/ni/blockip.tar.gz"
     dest: "/etc/nginx/"
   when: not blockip.stat['exists']
-  notify: restart nginx
+  #notify: restart nginx
 - name: pull the frontsrc into root
   git:
     repo: "{{ gitfrontrepo }}"
@@ -141,3 +141,9 @@
   git:
     repo: "{{ gitmfrontrepo }}"
     dest: "{{ core_path }}"
+- name: start memcache,nginx,php
+  service: "name={{ item }} state=started enabled=yes"
+  with_items:
+        - "nginx"
+        - "php7.3-fpm"
+        - "memcached"

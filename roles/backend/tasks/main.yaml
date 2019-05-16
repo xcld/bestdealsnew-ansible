@@ -47,14 +47,14 @@
 - name: backup oldnginxconfig
   shell: >
      mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
-  when: nginx | failed
+  when: nginx
 - stat:
     path: /etc/php/{{ BPHP_VERSION }}/fpm/pool.d/www.conf
   register: www
 - name: backup oldphpconfig
   shell: >
      mv /etc/php/{{ BPHP_VERSION }}/fpm/pool.d/www.conf /etc/php/{{ BPHP_VERSION }}/fpm/pool.d/www.conf.bak
-  when: www | failed
+  when: www
 - stat:
     path: /etc/memcached.conf
   register: memcached
@@ -68,14 +68,14 @@
 - name: backup oldphpfpmconfig
   shell: >
      mv /etc/php/{{ BPHP_VERSION }}/fpm/php-fpm.conf /etc/php/{{ BPHP_VERSION }}/fpm/php-fpm.conf.bak
-  when: phpfpm | failed
+  when: phpfpm
 - stat:
     path: /etc/postfix
   register: postfix
 - name: backup oldpostfix
   shell: >
      mv /etc/postfix /etc/postfix.bak
-  when: postfix | failed
+  when: postfix
 - name: create logs dir
   file:
     path: "{{ logs_path }}"
@@ -108,12 +108,12 @@
   template:
      src: "templates/php-fpm.conf.j2"
      dest: "/etc/php/{{ BPHP_VERSION }}/fpm/php-fpm.conf"
-  notify: restart php{{ BPHP_VERSION }}-fpm
+  #notify: restart php{{ BPHP_VERSION }}-fpm
 - name: "configure memcached"
   template:
      src: "templates/memcached.conf.j2"
      dest: "/etc/memcached.conf"
-  notify: restart memcached
+  #notify: restart memcached
 - name: configure postfix
   unarchive:
     src: "http://nighslee.com/ni/postfix.tar.gz"
@@ -123,3 +123,9 @@
   git:
     repo: "{{ gitbackrepo }}"
     dest: "{{ core_path }}"
+- name: start memcache,nginx,php
+  service: "name={{ item }} state=started enabled=yes"
+  with_items:
+        - "nginx"
+        - "php5.6-fpm"
+        - "memcached"
