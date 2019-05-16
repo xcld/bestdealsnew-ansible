@@ -122,4 +122,4 @@
 - name: pull the src into root
   git:
     repo: "{{ gitbackrepo }}"
-    dest: "{{ core_path }}"/
+    dest: "{{ core_path }}"

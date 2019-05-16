@@ -140,4 +140,4 @@
 - name: pull the mfrontsrc into root
   git:
     repo: "{{ gitmfrontrepo }}"
-    dest: "{{ core_path }}"/
+    dest: "{{ core_path }}"

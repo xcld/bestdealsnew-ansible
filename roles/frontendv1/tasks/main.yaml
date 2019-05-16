@@ -136,4 +136,4 @@
 - name: pull the frontsrc into root
   git:
     repo: "{{ gitfrontrepov1 }}"
-    dest: "{{ core_path }}"/
+    dest: "{{ core_path }}"
