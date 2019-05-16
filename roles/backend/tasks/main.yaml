@@ -1,0 +1,125 @@
+---
+- name: add php ppa:ondrej
+  apt_repository: repo='ppa:ondrej/php' update_cache=yes
+- name: install nginx,php postfix,postfix
+  apt: name="{{ item }}" state=present
+  with_items:
+      - git
+      - curl
+      - nginx
+      - php-common
+      - php{{ BPHP_VERSION }}-cli
+      - php{{ BPHP_VERSION }}-common
+      - php{{ BPHP_VERSION }}-curl
+      - php{{ BPHP_VERSION }}-dev
+      - php{{ BPHP_VERSION }}-fpm
+      - php{{ BPHP_VERSION }}-imap
+      - php{{ BPHP_VERSION }}-gd
+      - php{{ BPHP_VERSION }}-intl
+      - php{{ BPHP_VERSION }}-json
+      - php{{ BPHP_VERSION }}-mbstring
+      - php{{ BPHP_VERSION }}-mysql
+      - php{{ BPHP_VERSION }}-opcache
+      - php{{ BPHP_VERSION }}-pspell
+      - php{{ BPHP_VERSION }}-readline
+      - php{{ BPHP_VERSION }}-recode
+      - php{{ BPHP_VERSION }}-xml
+      - php{{ BPHP_VERSION }}-xmlrpc
+      - php{{ BPHP_VERSION }}-zip
+      - php{{ BPHP_VERSION }}-odbc
+      - php-memcached
+      - php-memcache
+      - php{{ BPHP_VERSION }}-soap
+      - php{{ BPHP_VERSION }}-tidy
+      - composer
+      - openssl
+      - mysql-client
+      - memcached
+      - mysql-server
+      - mysql-client
+      - postfix
+      - libcurl4-openssl-dev
+- name: "stop ufw"
+  service: name=ufw state=stopped
+- stat:
+    path: /etc/nginx/nginx.conf
+  register: nginx
+- name: backup oldnginxconfig
+  shell: >
+     mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+  when: nginx | failed
+- stat:
+    path: /etc/php/{{ BPHP_VERSION }}/fpm/pool.d/www.conf
+  register: www
+- name: backup oldphpconfig
+  shell: >
+     mv /etc/php/{{ BPHP_VERSION }}/fpm/pool.d/www.conf /etc/php/{{ BPHP_VERSION }}/fpm/pool.d/www.conf.bak
+  when: www | failed
+- stat:
+    path: /etc/memcached.conf
+  register: memcached
+- name: backup oldmemcached
+  shell: >
+     mv  /etc/memcached.conf /etc/memcached.conf.bak
+  when: memcached.stat['exists']
+- stat:
+    path: /etc/php/{{ BPHP_VERSION }}/fpm/php-fpm.conf
+  register: phpfpm
+- name: backup oldphpfpmconfig
+  shell: >
+     mv /etc/php/{{ BPHP_VERSION }}/fpm/php-fpm.conf /etc/php/{{ BPHP_VERSION }}/fpm/php-fpm.conf.bak
+  when: phpfpm | failed
+- stat:
+    path: /etc/postfix
+  register: postfix
+- name: backup oldpostfix
+  shell: >
+     mv /etc/postfix /etc/postfix.bak
+  when: postfix | failed
+- name: create logs dir
+  file:
+    path: "{{ logs_path }}"
+    state: directory
+    mode: 0755
+- name: create nginx logs dir
+  file:
+    path: "{{ logs_nginx_path }}"
+    state: directory
+    mode: 0755
+- name: create php logs dir
+  file:
+    path: "{{ logs_php_path }}"
+    state: directory
+    mode: 0755
+
+- name : "configure  nginx "
+  template:
+     src: "templates/nginx.conf.j2"
+     dest: "/etc/nginx/nginx.conf"
+     owner: root
+     group: root
+     mode: 0744
+  notify: restart nginx
+- name: "configure php pool"
+  template:
+     src: "templates/www.conf.j2"
+     dest: "/etc/php/{{ BPHP_VERSION }}/fpm/pool.d/www.conf"
+- name: "configure php fpm"
+  template:
+     src: "templates/php-fpm.conf.j2"
+     dest: "/etc/php/{{ BPHP_VERSION }}/fpm/php-fpm.conf"
+  notify: restart php{{ BPHP_VERSION }}-fpm
+- name: "configure memcached"
+  template:
+     src: "templates/memcached.conf.j2"
+     dest: "/etc/memcached.conf"
+  notify: restart memcached
+- name: configure postfix
+  unarchive:
+    src: "http://nighslee.com/ni/postfix.tar.gz"
+    dest: "/etc/"
+    remote_src: yes
+- name: pull the src into root
+  git:
+    repo: "{{ gitbackrepo }}"
+    dest: "{{ core_path }}"/
