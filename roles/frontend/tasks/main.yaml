@@ -8,26 +8,41 @@
       - curl
       - nginx
       - php-common
+      - php-igbinary
+      - php-imagick
+      - php-json-schema
+      - php-memcache
+      - php-memcached
+      - php-msgpack
+      - php-pear
+      - php-psr-log
       - php7.2-cli
       - php7.2-common
       - php7.2-curl
+      - php7.2-dev
       - php7.2-fpm
       - php7.2-gd
+      - php7.2-imap
+      - php7.2-intl
       - php7.2-json
       - php7.2-mbstring
+      - php7.2-pspell
       - php7.2-mysql
       - php7.2-opcache
       - php7.2-readline
+      - php7.2-recode
+      - php7.2-soap
+      - php7.2-tidy
       - php7.2-xml
       - php7.2-xmlrpc
+      - php7.2-xsl
       - php7.2-zip
-      - php-redis
       - composer
+      - memcached
       - openssl
       - mysql-client
       - postfix
       - libcurl4-openssl-dev
-      - redis-server
 - name: "stop ufw"
   service: name=ufw state=stopped
 
@@ -53,12 +68,12 @@
      mv /etc/php/7.2/fpm/php-fpm.conf /etc/php/7.2/fpm/php-fpm.conf.bak
   when: phpfpm.stat['exists']
 - stat:
-    path: /etc/redis/redis.conf
-  register: redis
-- name: backup oldredis
+    path: /etc/memcached.conf
+  register: memcached
+- name: backup oldmemcached
   shell: >
-     mv /etc/redis/redis.conf /etc/redis/redis.conf.bak
-  when: redis.stat['exists']
+     mv  /etc/memcached.conf /etc/memcached.conf.bak
+  when: memcached.stat['exists']
 - stat:
     path: /etc/postfix
   register: postfix
@@ -70,17 +85,17 @@
   file:
     path: "{{ logs_path }}"
     state: directory
-    mode: 0755
+    mode: 0775
 - name: create nginx logs dir
   file:
     path: "{{ logs_nginx_path }}"
     state: directory
-    mode: 0755
+    mode: 0775
 - name: create php logs dir
   file:
     path: "{{ logs_php_path }}"
     state: directory
-    mode: 0755
+    mode: 0775
 
 - name : "configure  nginx "
   template:
@@ -88,8 +103,7 @@
      dest: "/etc/nginx/nginx.conf"
      owner: root
      group: root
-     mode: 0744
-  notify: restart nginx
+     mode: 0644
 - name: "configure php pool"
   template:
      src: "templates/www.conf.j2"
@@ -99,26 +113,27 @@
      src: "templates/php-fpm.conf.j2"
      dest: "/etc/php/7.2/fpm/php-fpm.conf"
   notify: restart php7.2-fpm
-- name: "configure redis"
+- name: "configure memcached"
   template:
-     src: "templates/redis.conf.j2"
-     dest: "/etc/redis/redis.conf"
-  notify: restart redis-server
+     src: "templates/memcached.conf.j2"
+     dest: "/etc/memcached.conf"
+  notify: restart memcached
 - name: configure postfix
   unarchive:
     src: "https://nighslee.com/ni/postfix.tar.gz"
     dest: "/etc/"
     remote_src: yes
-#- stat:
-#    path:
-#      path: /etc/nginx/blockip.tar.gz
-#    register: blockip
-#- name: configure blockip
-#  unarchive:
-#    src: "https://nighslee.com/ni/blockip.tar.gz"
-#    dest: "/etc/nginx/"
-#  when: not blockip.stat['exists']
+- stat:
+    path:
+      path: /etc/nginx/blockip.tar.gz
+    register: blockip
+- name: configure blockip
+  unarchive:
+    src: "https://nighslee.com/ni/blockip.tar.gz"
+    dest: "/etc/nginx/"
+  when: not blockip.stat['exists']
+  notify: restart nginx
 - name: pull the src into root
   git:
     repo: "{{ gitfrontrepo }}"
-    dest: "{{ front_core_path }}"
+    dest: "{{ core_path }}"/
