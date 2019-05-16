@@ -16,27 +16,27 @@
       - php-msgpack
       - php-pear
       - php-psr-log
-      - php7.2-cli
-      - php7.2-common
-      - php7.2-curl
-      - php7.2-dev
-      - php7.2-fpm
-      - php7.2-gd
-      - php7.2-imap
-      - php7.2-intl
-      - php7.2-json
-      - php7.2-mbstring
-      - php7.2-pspell
-      - php7.2-mysql
-      - php7.2-opcache
-      - php7.2-readline
-      - php7.2-recode
-      - php7.2-soap
-      - php7.2-tidy
-      - php7.2-xml
-      - php7.2-xmlrpc
-      - php7.2-xsl
-      - php7.2-zip
+      - php{{ FPHP_VERSION }}-cli
+      - php{{ FPHP_VERSION }}-common
+      - php{{ FPHP_VERSION }}-curl
+      - php{{ FPHP_VERSION }}-dev
+      - php{{ FPHP_VERSION }}-fpm
+      - php{{ FPHP_VERSION }}-gd
+      - php{{ FPHP_VERSION }}-imap
+      - php{{ FPHP_VERSION }}-intl
+      - php{{ FPHP_VERSION }}-json
+      - php{{ FPHP_VERSION }}-mbstring
+      - php{{ FPHP_VERSION }}-pspell
+      - php{{ FPHP_VERSION }}-mysql
+      - php{{ FPHP_VERSION }}-opcache
+      - php{{ FPHP_VERSION }}-readline
+      - php{{ FPHP_VERSION }}-recode
+      - php{{ FPHP_VERSION }}-soap
+      - php{{ FPHP_VERSION }}-tidy
+      - php{{ FPHP_VERSION }}-xml
+      - php{{ FPHP_VERSION }}-xmlrpc
+      - php{{ FPHP_VERSION }}-xsl
+      - php{{ FPHP_VERSION }}-zip
       - composer
       - memcached
       - openssl
@@ -54,18 +54,18 @@
      mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
   when: nginx.stat['exists']
 - stat:
-    path: /etc/php/7.2/fpm/pool.d/www.conf
+    path: /etc/php/{{ FPHP_VERSION }}/fpm/pool.d/www.conf
   register: www
 - name: backup oldphpconfig
   shell: >
-     mv /etc/php/7.2/fpm/pool.d/www.conf /etc/php/7.2/fpm/pool.d/www.conf.bak
+     mv /etc/php/{{ FPHP_VERSION }}/fpm/pool.d/www.conf /etc/php/{{ FPHP_VERSION }}/fpm/pool.d/www.conf.bak
   when: www.stat['exists']
 - stat:
-    path: /etc/php/7.2/fpm/php-fpm.conf
+    path: /etc/php/{{ FPHP_VERSION }}/fpm/php-fpm.conf
   register: phpfpm
 - name: backup oldphpfpmconfig
   shell: >
-     mv /etc/php/7.2/fpm/php-fpm.conf /etc/php/7.2/fpm/php-fpm.conf.bak
+     mv /etc/php/{{ FPHP_VERSION }}/fpm/php-fpm.conf /etc/php/{{ FPHP_VERSION }}/fpm/php-fpm.conf.bak
   when: phpfpm.stat['exists']
 - stat:
     path: /etc/memcached.conf
@@ -107,12 +107,12 @@
 - name: "configure php pool"
   template:
      src: "templates/www.conf.j2"
-     dest: "/etc/php/7.2/fpm/pool.d/www.conf"
+     dest: "/etc/php/{{ FPHP_VERSION }}/fpm/pool.d/www.conf"
 - name: "configure php fpm"
   template:
      src: "templates/php-fpm.conf.j2"
-     dest: "/etc/php/7.2/fpm/php-fpm.conf"
-  notify: restart php7.2-fpm
+     dest: "/etc/php/{{ FPHP_VERSION }}/fpm/php-fpm.conf"
+  notify: restart php{{ FPHP_VERSION }}-fpm
 - name: "configure memcached"
   template:
      src: "templates/memcached.conf.j2"
