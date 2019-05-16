@@ -10,6 +10,11 @@
   roles:
     - frontend
     - cron
+- name: "install frontendv1"
+  hosts: bestdeals2-frontendv1
+  roles:
+    - frontendv1
+    - cron
 - name: "install backend"
   hosts: bestdeals2-backend
   roles:
