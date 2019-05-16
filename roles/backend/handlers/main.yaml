@@ -2,7 +2,7 @@
 - name: restart nginx
   service: name=nginx state=restarted enabled=yes
 - name: restart php{{ BPHP_VERSION }}-fpm
-  service: name=php{{ BPHP_VERSION }}-fpm state=restarted enabled=yes
+  service: name=php5.6-fpm state=restarted enabled=yes
 - name: restart mysql
   service: name=mysql state=restarted enabled=yes
 - name: restart memcached
