@@ -135,5 +135,5 @@
   notify: restart nginx
 - name: pull the frontsrc into root
   git:
-    repo: "{{ gitfrontrepo }}"
+    repo: "{{ gitfrontrepov1 }}"
     dest: "{{ core_path }}"/
