@@ -137,7 +137,3 @@
   git:
     repo: "{{ gitfrontrepo }}"
     dest: "{{ core_path }}"/
-- name: pull the mfrontsrc into root
-  git:
-    repo: "{{ gitmfrontrepo }}"
-    dest: "{{ core_path }}"/

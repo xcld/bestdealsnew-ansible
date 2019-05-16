@@ -1,0 +1,7 @@
+---
+- name: restart nginx
+  service: name=nginx state=restarted enabled=yes
+- name: restart php{{ FPHP_VERSION }}-fpm
+  service: name=php{{ FPHP_VERSION }}-fpm state=restarted enabled=yes
+- name: restart memcached
+  service: name=memcached state=restarted enabled=yes
