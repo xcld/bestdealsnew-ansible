@@ -5,16 +5,22 @@
     - user
     - timezone
     - setup
+  tags:
+    - basic
 - name: "install frontend"
   hosts: bestdeals2-frontend
   roles:
     - frontend
     - cron
+  tags:
+    - frontend
 - name: "install frontendv1"
   hosts: bestdeals2-frontendv1
   roles:
     - frontendv1
     - cron
+  tags:
+    - frontendv1
 - name: "install backend"
   hosts: bestdeals2-backend
   roles:
