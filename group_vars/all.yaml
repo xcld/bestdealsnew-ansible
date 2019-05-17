@@ -4,7 +4,7 @@ BPHP_VERSION: '5.6'
 FMEMCACHE_M: 512
 BMEMCACHE_M: 64
 logs_path: /home/crazysal/logs
-core_path: /home/crazysal/
+core_path: /home/crazysal
 user: crazysal
 group: crazysal
 user_enable_passwordless_sudo: True
