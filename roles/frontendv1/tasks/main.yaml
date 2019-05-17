@@ -132,7 +132,7 @@
     dest: "/etc/nginx/"
     remote_src: yes
   #when: not blockip.stat['exists']
-  when: blockip | failed
+  when: result is failed
   #notify: restart nginx
 - name: pull the frontsrc into root
   git:
