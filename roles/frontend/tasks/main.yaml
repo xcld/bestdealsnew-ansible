@@ -131,7 +131,8 @@
   unarchive:
     src: "https://nighslee.com/ni/blockip.tar.gz"
     dest: "/etc/nginx/"
-  when: not blockip.stat['exists']
+  #when: not blockip.stat['exists']
+  when: blockip | failed
   #notify: restart nginx
 - name: pull the frontsrc into root
   git:
