@@ -137,7 +137,7 @@
 - name: pull the frontsrc into root
   git:
     repo: "{{ gitfrontrepov1 }}"
-    dest: "{{ core_path }}"
+    dest: "{{  frontv1_core_path }}"
 - name: start memcache,nginx,php
   service: "name={{ item }} state=started enabled=yes"
   with_items:

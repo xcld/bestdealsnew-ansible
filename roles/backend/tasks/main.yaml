@@ -122,7 +122,7 @@
 - name: pull the src into root
   git:
     repo: "{{ gitbackrepo }}"
-    dest: "{{ core_path }}/"
+    dest: "{{  backend_core_path }}"
 - name: start memcache,nginx,php
   service: "name={{ item }} state=started enabled=yes"
   with_items:
