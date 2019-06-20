@@ -39,7 +39,7 @@
       - "mysql-client"
       - "postfix"
       - "libcurl4-openssl-dev"
-    state: presente
+    state: present
 - name: "stop ufw"
   service: name=ufw state=stopped
 - stat:
