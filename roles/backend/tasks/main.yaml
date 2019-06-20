@@ -2,8 +2,8 @@
 - name: add php ppa:ondrej
   apt_repository: repo='ppa:ondrej/php' update_cache=yes
 - name: install nginx,php postfix,postfix
-  apt: name="{{ item }}" state=present
-  with_items:
+  apt:
+    name:
       - "git"
       - "curl"
       - "nginx"
@@ -39,6 +39,7 @@
       - "mysql-client"
       - "postfix"
       - "libcurl4-openssl-dev"
+    state: presente
 - name: "stop ufw"
   service: name=ufw state=stopped
 - stat:
@@ -114,18 +115,20 @@
      src: "templates/memcached.conf.j2"
      dest: "/etc/memcached.conf"
   #notify: restart memcached
-- name: configure postfix
-  unarchive:
-    src: "http://nighslee.com/ni/postfix.tar.gz"
-    dest: "/etc/"
-    remote_src: yes
+#- name: configure postfix
+#  unarchive:
+#    src: "http://nighslee.com/ni/postfix.tar.gz"
+#    dest: "/etc/"
+#    remote_src: yes
 - name: pull the src into root
   git:
     repo: "{{ gitbackrepo }}"
     dest: "{{  backend_core_path }}"
 - name: start memcache,nginx,php
-  service: "name={{ item }} state=started enabled=yes"
-  with_items:
-        - "nginx"
-        - "php5.6-fpm"
-        - "memcached"
+  service:
+        name:
+          - "nginx"
+          - "php7.1-fpm"
+          - "memcached"
+        state: started
+        enabled: yes

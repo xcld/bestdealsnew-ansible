@@ -2,8 +2,8 @@
 - name: add php ppa:ondrej
   apt_repository: repo='ppa:ondrej/php' update_cache=yes
 - name: install nginx,php postfix,postfix
-  apt: name="{{ item }}" state=present
-  with_items:
+  apt:
+    name:
       - "git"
       - "curl"
       - "nginx"
@@ -43,6 +43,7 @@
       - "mysql-client"
       - "postfix"
       - "libcurl4-openssl-dev"
+    state: presente
 - name: "stop ufw"
   service: name=ufw state=stopped
 
@@ -118,19 +119,19 @@
      src: "templates/memcached.conf.j2"
      dest: "/etc/memcached.conf"
   #notify: restart memcached
-- name: configure postfix
-  unarchive:
-    src: "https://nighslee.com/ni/postfix.tar.gz"
-    dest: "/etc/"
-    remote_src: yes
-- stat:
-    path: /etc/nginx/blockip.tar.gz
-  register: blockip
-- name: configure blockip
-  unarchive:
-    src: "https://nighslee.com/ni/blockip.tar.gz"
-    dest: "/etc/nginx/"
-    remote_src: yes
+#- name: configure postfix
+#  unarchive:
+#    src: "https://nighslee.com/ni/postfix.tar.gz"
+#    dest: "/etc/"
+#    remote_src: yes
+#- stat:
+#    path: /etc/nginx/blockip.tar.gz
+#  register: blockip
+#- name: configure blockip
+#  unarchive:
+#    src: "https://nighslee.com/ni/blockip.tar.gz"
+#    dest: "/etc/nginx/"
+#    remote_src: yes
   #when: not blockip.stat['exists']
   when: result is failed
   #notify: restart nginx
@@ -139,8 +140,10 @@
     repo: "{{ gitfrontrepov1 }}"
     dest: "{{  frontv1_core_path }}"
 - name: start memcache,nginx,php
-  service: "name={{ item }} state=started enabled=yes"
-  with_items:
-        - "nginx"
-        - "php7.3-fpm"
-        - "memcached"
+  service:
+        name:
+          - "nginx"
+          - "php7.1-fpm"
+          - "memcached"
+        state: started
+        enabled: yes
