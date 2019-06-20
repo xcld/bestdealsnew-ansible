@@ -4,41 +4,41 @@
 - name: install nginx,php postfix,postfix
   apt:
     name:
-      - "git"
-      - "curl"
-      - "nginx"
-      - "php-common"
-      - "php{{ BPHP_VERSION }}-cli"
-      - "php{{ BPHP_VERSION }}-common"
-      - "php{{ BPHP_VERSION }}-curl"
-      - "php{{ BPHP_VERSION }}-dev"
-      - "php{{ BPHP_VERSION }}-fpm"
-      - "php{{ BPHP_VERSION }}-imap"
-      - "php{{ BPHP_VERSION }}-gd"
-      - "php{{ BPHP_VERSION }}-intl"
-      - "php{{ BPHP_VERSION }}-json"
-      - "php{{ BPHP_VERSION }}-mbstring"
-      - "php{{ BPHP_VERSION }}-mysql"
-      - "php{{ BPHP_VERSION }}-opcache"
-      - "php{{ BPHP_VERSION }}-pspell"
-      - "php{{ BPHP_VERSION }}-readline"
-      - "php{{ BPHP_VERSION }}-recode"
-      - "php{{ BPHP_VERSION }}-xml"
-      - "php{{ BPHP_VERSION }}-xmlrpc"
-      - "php{{ BPHP_VERSION }}-zip"
-      - "php{{ BPHP_VERSION }}-odbc"
-      - "php-memcached"
-      - "php-memcache"
-      - "php{{ BPHP_VERSION }}-soap"
-      - "php{{ BPHP_VERSION }}-tidy"
-      - "composer"
-      - "openssl"
-      - "mysql-client"
-      - "memcached"
-      - "mysql-server"
-      - "mysql-client"
-      - "postfix"
-      - "libcurl4-openssl-dev"
+      - git
+      - curl
+      - nginx
+      - php-common
+      - php{{ BPHP_VERSION }}-cli
+      - php{{ BPHP_VERSION }}-common
+      - php{{ BPHP_VERSION }}-curl
+      - php{{ BPHP_VERSION }}-dev
+      - php{{ BPHP_VERSION }}-fpm
+      - php{{ BPHP_VERSION }}-imap
+      - php{{ BPHP_VERSION }}-gd
+      - php{{ BPHP_VERSION }}-intl
+      - php{{ BPHP_VERSION }}-json
+      - php{{ BPHP_VERSION }}-mbstring
+      - php{{ BPHP_VERSION }}-mysql
+      - php{{ BPHP_VERSION }}-opcache
+      - php{{ BPHP_VERSION }}-pspell
+      - php{{ BPHP_VERSION }}-readline
+      - php{{ BPHP_VERSION }}-recode
+      - php{{ BPHP_VERSION }}-xml
+      - php{{ BPHP_VERSION }}-xmlrpc
+      - php{{ BPHP_VERSION }}-zip
+      - php{{ BPHP_VERSION }}-odbc
+      - php-memcached
+      - php-memcache
+      - php{{ BPHP_VERSION }}-soap
+      - php{{ BPHP_VERSION }}-tidy
+      - composer
+      - openssl
+      - mysql-client
+      - memcached
+      - mysql-server
+      - mysql-client
+      - postfix
+      - libcurl4-openssl-dev
     state: present
 - name: "stop ufw"
   service: name=ufw state=stopped
@@ -127,8 +127,8 @@
 - name: start memcache,nginx,php
   service:
         name:
-          - "nginx"
-          - "php7.1-fpm"
-          - "memcached"
+          - nginx
+          - php7.1-fpm
+          - memcached
         state: started
         enabled: yes

@@ -4,45 +4,45 @@
 - name: install nginx,php postfix,postfix
   apt:
     name:
-      - "git"
-      - "curl"
-      - "nginx"
-      - "php-common"
-      - "php-igbinary"
-      - "php-imagick"
-      - "php-json-schema"
-      - "php-memcache"
-      - "php-memcached"
-      - "php-msgpack"
-      - "php-pear"
-      - "php-psr-log"
-      - "php{{ FPHP_VERSION }}-cli"
-      - "php{{ FPHP_VERSION }}-common"
-      - "php{{ FPHP_VERSION }}-curl"
-      - "php{{ FPHP_VERSION }}-dev"
-      - "php{{ FPHP_VERSION }}-fpm"
-      - "php{{ FPHP_VERSION }}-gd"
-      - "php{{ FPHP_VERSION }}-imap"
-      - "php{{ FPHP_VERSION }}-intl"
-      - "php{{ FPHP_VERSION }}-json"
-      - "php{{ FPHP_VERSION }}-mbstring"
-      - "php{{ FPHP_VERSION }}-pspell"
-      - "php{{ FPHP_VERSION }}-mysql"
-      - "php{{ FPHP_VERSION }}-opcache"
-      - "php{{ FPHP_VERSION }}-readline"
-      - "php{{ FPHP_VERSION }}-recode"
-      - "php{{ FPHP_VERSION }}-soap"
-      - "php{{ FPHP_VERSION }}-tidy"
-      - "php{{ FPHP_VERSION }}-xml"
-      - "php{{ FPHP_VERSION }}-xmlrpc"
-      - "php{{ FPHP_VERSION }}-xsl"
-      - "php{{ FPHP_VERSION }}-zip"
-      - "composer"
-      - "memcached"
-      - "openssl"
-      - "mysql-client"
-      - "postfix"
-      - "libcurl4-openssl-dev"
+      - git
+      - curl
+      - nginx
+      - php-common
+      - php-igbinary
+      - php-imagick
+      - php-json-schema
+      - php-memcache
+      - php-memcached
+      - php-msgpack
+      - php-pear
+      - php-psr-log
+      - php{{ FPHP_VERSION }}-cli
+      - php{{ FPHP_VERSION }}-common
+      - php{{ FPHP_VERSION }}-curl
+      - php{{ FPHP_VERSION }}-dev
+      - php{{ FPHP_VERSION }}-fpm
+      - php{{ FPHP_VERSION }}-gd
+      - php{{ FPHP_VERSION }}-imap
+      - php{{ FPHP_VERSION }}-intl
+      - php{{ FPHP_VERSION }}-json
+      - php{{ FPHP_VERSION }}-mbstring
+      - php{{ FPHP_VERSION }}-pspell
+      - php{{ FPHP_VERSION }}-mysql
+      - php{{ FPHP_VERSION }}-opcache
+      - php{{ FPHP_VERSION }}-readline
+      - php{{ FPHP_VERSION }}-recode
+      - php{{ FPHP_VERSION }}-soap
+      - php{{ FPHP_VERSION }}-tidy
+      - php{{ FPHP_VERSION }}-xml
+      - php{{ FPHP_VERSION }}-xmlrpc
+      - php{{ FPHP_VERSION }}-xsl
+      - php{{ FPHP_VERSION }}-zip
+      - composer
+      - memcached
+      - openssl
+      - mysql-client
+      - postfix
+      - libcurl4-openssl-dev
     state: present
 - name: "stop ufw"
   service: name=ufw state=stopped
@@ -146,8 +146,8 @@
 - name: start memcache,nginx,php
   service:
         name:
-          - "nginx"
-          - "php7.1-fpm"
-          - "memcached"
+          - nginx
+          - php7.1-fpm
+          - memcached
         state: started
         enabled: yes
